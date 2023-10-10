@@ -3,6 +3,7 @@
 </template>
 
 <script>
+    import maskEditFn from "./logic/index";
     export default {
 	      props: {
 	          mask: {
@@ -22,7 +23,7 @@
 		        function handleChange(value) {
                 console.log(props.mask);
 
-			          emit('input', value);
+			          emit('input', maskEditFn(props.mask, value));
 		        }
 	      },
     };
