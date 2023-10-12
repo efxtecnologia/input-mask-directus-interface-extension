@@ -2,6 +2,8 @@ import { stripped } from "./common";
 
 const cpfMask =  "000.000.000-00";
 const cnpjMask = "00.000.000/0000-00";
+const cpfLength = 11;
+const cnpjLength = 14;
 
 const cpfMaskFn = s => [
     { value: s.slice(0, 3), separator: "." },
@@ -26,25 +28,33 @@ function withSeparator(s, { separator, value }) {
 }
 
 function asCpf(s) {
-    if (s.length > 11 || s.length < 4) {
+    if (s.length > cpfLength || s.length < 4) {
         return s;
     }
     return cpfMaskFn(s).reduce(withSeparator, "");
 }
 
 function asCnpj(s) {
-    if (s.length > 14 || s.length < 3) {
+    if (s.length > cnpjLength || s.length < 3) {
         return s;
     }
     return cnpjMaskFn(s).reduce(withSeparator, "");
 }
 
-export default _value => {
+const taxIdMask = _value => {
     const value = stripped(_value);
-    if (value.length < 12) {
+
+    if (value.length > cnpjLength) {
+        return taxIdMask(value.slice(0, cnpjLength));
+    }
+
+    if (value.length <= cpfLength) {
         return asCpf(value);
     }
+
     return asCnpj(value);
-}
+};
+
+export default taxIdMask;
 
 export { asCpf, asCnpj };

@@ -64,4 +64,9 @@ describe("Brazilian taxId Mask", () => {
             expect(taxIdMask("123456789012")).toBe("12.345.678/9012");
         });
     });
+
+    describe("don't allow length of raw string to go beyond CNPJ length", () => {
+        expect(taxIdMask("12.345.678/9012-34")).toBe("12.345.678/9012-34");
+        expect(taxIdMask("12.345.678/9012-345")).toBe("12.345.678/9012-34");
+    });
 });
