@@ -9,6 +9,9 @@ const types = {
     cxA: "CXA",
     cxB: "CXB",
     currency: "$",
+    formatedNumber: "#,##0.00", // formatted number with thousands separators and 2 digit precision
+    integer: "I",
+    phoneNumberBR: "TEL", // formats land line or cell phone numbers accordingly
 };
 
 const maskFns = {
@@ -17,6 +20,9 @@ const maskFns = {
     cxA: identity,
     cxB: identity,
     currency: identity,
+    formatedNumber: identity,
+    integer: identity,
+    phoneNumberBR: identity,
 };
 
 const typesByMask = swappedKeysAndValues(types);

@@ -1,6 +1,5 @@
 import InterfaceWebMRPMaskEdit from './interface.vue';
 
-console.log("Loading extension InterfaceWebMRPMaskEdit");
 export default {
 	  id: 'webmrp-maskedit',
 	  name: 'Mask Edit Field',

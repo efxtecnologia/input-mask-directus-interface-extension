@@ -1,5 +1,8 @@
 <template>
-	  <input :value="value" @input="handleChange($event.target.value)" />
+    <v-input
+        :model-value = "value"
+        @update:model-value="handleChange($event)"
+    />
 </template>
 
 <script>
@@ -20,9 +23,10 @@
 	      setup(props, context) {
             const { emit } = context;
 
-		        async function handleChange(value) {
-			          emit('input', value);
+		        async function handleChange(_value) {
+                const value = _value === null ? "" : _value;
                 const newValue = maskEditFn(props.mask, value);
+			          emit('input', value);
                 await nextTick();
 			          emit('input', newValue);
 		        }
