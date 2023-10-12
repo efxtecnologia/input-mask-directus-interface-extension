@@ -1,9 +1,10 @@
 <template>
-	<input :value="value" @input="handleChange($event.target.value)" />
+	  <input :value="value" @input="handleChange($event.target.value)" />
 </template>
 
 <script>
     import maskEditFn from "./logic/index";
+    import { nextTick } from "vue";
     export default {
 	      props: {
 	          mask: {
@@ -16,15 +17,17 @@
 		        },
 	      },
 	      emits: ['input'],
-	      setup(props, { emit }) {
-            console.log("Extenstion Setup");
-		        return { handleChange };
+	      setup(props, context) {
+            const { emit } = context;
 
-		        function handleChange(value) {
-                console.log(props.mask);
-
-			          emit('input', maskEditFn(props.mask, value));
+		        async function handleChange(value) {
+			          emit('input', value);
+                const newValue = maskEditFn(props.mask, value);
+                await nextTick();
+			          emit('input', newValue);
 		        }
+
+		        return { handleChange };
 	      },
     };
 </script>

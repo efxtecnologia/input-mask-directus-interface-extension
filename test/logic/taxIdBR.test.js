@@ -39,6 +39,7 @@ describe("asCnpj mask", () => {
 describe("Brazilian taxId Mask", () => {
     describe("when length is less than the minimum for a mask", () => {
         it("Should remove all non numeric chars", () => {
+            expect(taxIdMask("a")).toBe("");
             expect(taxIdMask("abc01")).toBe("01");
             expect(taxIdMask("/22")).toBe("22");
             expect(taxIdMask("084.")).toBe("084");
