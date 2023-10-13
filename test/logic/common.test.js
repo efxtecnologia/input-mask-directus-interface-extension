@@ -1,4 +1,4 @@
-import { parsedMask } from "../../src/logic/common";
+import { parsedMask, commonMasker } from "../../src/logic/common";
 
 describe("parsedMask", () => {
     it("converts a string representation of a mask into a masking function", () => {
@@ -29,5 +29,11 @@ describe("parsedMask", () => {
             { value: "0001", separator: "/" },
             { value: "96", separator: "-" },
         ]);
+    });
+});
+
+describe("Common masker", () => {
+    it("applies a mask to a value", () => {
+        expect(commonMasker("00000-000", "04363040")).toBe("04363-040");
     });
 });

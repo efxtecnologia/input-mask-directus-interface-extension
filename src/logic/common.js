@@ -34,8 +34,13 @@ const parsedMask = mask => {
     };
 };
 
+function commonMasker(mask, value) {
+    return parsedMask(mask)(value).reduce(withSeparator, "");
+}
+
 export {
     stripped,
     withSeparator,
     parsedMask,
-}
+    commonMasker,
+};
