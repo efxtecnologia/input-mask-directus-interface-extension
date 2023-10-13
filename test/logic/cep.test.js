@@ -1,6 +1,6 @@
 import cep from "../../src/logic/cep";
 
-describe("cepMask", () => {
+describe("CEP mask", () => {
     it("allows only numeric chars", () => {
         expect(cep("abc0d1e")).toBe("01");
     });
