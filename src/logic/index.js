@@ -1,4 +1,5 @@
 import taxIdBR from "./taxIdBR";
+import cep from "./cep";
 
 const swappedKeysAndValues = (o) => Object.fromEntries(Object.entries(o).map(([k, v]) => [v, k]));
 const identity = x => x;
@@ -15,7 +16,7 @@ const types = {
 };
 
 const maskFns = {
-    cep: identity,
+    cep,
     taxIdBR,
     cxA: s => s.toUpperCase(),
     cxB: s => s.toLowerCase(),
