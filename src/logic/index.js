@@ -17,8 +17,8 @@ const types = {
 const maskFns = {
     cep: identity,
     taxIdBR,
-    cxA: identity,
-    cxB: identity,
+    cxA: s => s.toUpperCase(),
+    cxB: s => s.toLowerCase(),
     currency: identity,
     formatedNumber: identity,
     integer: identity,
