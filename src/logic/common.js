@@ -15,6 +15,18 @@ function groupPart(separators, prior, group, index) {
     return { group, slicer, separator, finish };
 }
 
+const handleFirstSeparatorException = parsedMap => {
+    if (parsedMap.length <= 1 || parsedMap[0].value !== "") {
+        return parsedMap;
+    }
+    return [
+        { ...parsedMap[0], value: parsedMap[1].separator },
+        { ...parsedMap[1], separator: "" },
+        ...parsedMap.slice(2),
+    ];
+};
+
+
 const parsedMask = mask => {
     const groups = mask.split(/[^0-9]/g);
     const separators = Array.from(mask.replace(/\d/g, ''));
@@ -25,17 +37,19 @@ const parsedMask = mask => {
         [],
     );
     return value => {
-        return maskMap.map(groupPart => {
-            return {
-                value: groupPart.slicer(value),
-                separator: groupPart.separator,
-            };
-        });
+        return handleFirstSeparatorException(
+            maskMap.map(groupPart => {
+                return {
+                    value: groupPart.slicer(value),
+                    separator: groupPart.separator,
+                };
+            })
+        );
     };
 };
 
 function commonMasker(mask, value) {
-    return parsedMask(mask)(value).reduce(withSeparator, "");
+    return parsedMask(mask)(stripped(value)).reduce(withSeparator, "");
 }
 
 export {
