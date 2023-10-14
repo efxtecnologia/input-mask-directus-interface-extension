@@ -1,4 +1,4 @@
-import { parsedMask, commonMasker } from "../../src/logic/common";
+import { parsedMask, commonMasker, multiFormatter } from "../../src/logic/common";
 
 describe("parsedMask", () => {
     it("converts a string representation of a mask into a masking function", () => {
@@ -59,5 +59,22 @@ describe("Common masker", () => {
 
     it("returns empty string if value is empty", () => {
         expect(commonMasker("000.000.000-00", "")).toBe("");
+    });
+});
+
+describe("Multi formatter", () => {
+    it("applies formatter according to raw length", () => {
+        expect(multiFormatter(["(00)0000-0000", "(00)00000-0000"], "1195432123")).toBe("(11)9543-2123");
+        expect(multiFormatter(["(00)0000-0000", "(00)00000-0000"], "11954321234")).toBe("(11)95432-1234");
+    });
+
+    it("limits raw value length to lenghiest mask limit", () => {
+        expect(multiFormatter(["(00)0000-0000", "(00)00000-0000"], "119543212345")).toBe("(11)95432-1234");
+    });
+
+    it("works even if masks are not ordered by length", () => {
+        expect(multiFormatter(["(00)00000-0000", "(00)0000-0000"], "119543212345")).toBe("(11)95432-1234");
+        expect(multiFormatter(["(00)00000-0000", "(00)0000-0000"], "1195432123")).toBe("(11)9543-2123");
+        expect(multiFormatter(["(00)00000-0000", "(00)0000-0000"], "11954321234")).toBe("(11)95432-1234");
     });
 });

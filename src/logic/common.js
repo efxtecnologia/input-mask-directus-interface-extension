@@ -56,9 +56,24 @@ function commonMasker(mask, _value) {
     return parsedMask(mask)(value).reduce(withSeparator, "");
 }
 
+function masksCompare(m1, m2) {
+    const l1 = stripped(m1).length;
+    const l2 = stripped(m2).length;
+    return l1 < l2 ? -1 : (l1 === l2 ? 0 : 1);
+}
+
+function multiFormatter(_masks, _value) {
+    const masks = _masks.sort(masksCompare);
+    const value = stripped(_value);
+    const filteredMasks = masks.filter(m => value.length <= stripped(m).length);
+    const selectedMask = filteredMasks.length === 0 ? masks.slice(-1)[0] : filteredMasks[0];
+    return commonMasker(selectedMask, value);
+}
+
 export {
     stripped,
     withSeparator,
     parsedMask,
     commonMasker,
+    multiFormatter,
 };
