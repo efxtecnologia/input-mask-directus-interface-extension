@@ -1,5 +1,4 @@
-import taxIdBR from "./taxIdBR";
-import cep from "./cep";
+import { commonMasker, multiFormatter } from "./common";
 
 const swappedKeysAndValues = (o) => Object.fromEntries(Object.entries(o).map(([k, v]) => [v, k]));
 const identity = x => x;
@@ -7,23 +6,23 @@ const identity = x => x;
 const types = {
     cep: "CEP",
     taxIdBR: "CNPJ/CPF",
+    phoneNumberBR: "TEL", // formats land line or cell phone numbers accordingly
     cxA: "CXA",
     cxB: "CXB",
     currency: "$",
     formatedNumber: "#,##0.00", // formatted number with thousands separators and 2 digit precision
     integer: "I",
-    phoneNumberBR: "TEL", // formats land line or cell phone numbers accordingly
 };
 
 const maskFns = {
-    cep,
-    taxIdBR,
+    cep: s => commonMasker("00000-000", s),
+    taxIdBR: s => multiFormatter(["000.000.000-00", "00.000.000/0000-00"], s),
+    phoneNumberBR: s => multiFormatter(["(00)0000-0000", "(00)00000-0000"], s),
     cxA: s => s.toUpperCase(),
     cxB: s => s.toLowerCase(),
     currency: identity,
     formatedNumber: identity,
     integer: identity,
-    phoneNumberBR: identity,
 };
 
 const typesByMask = swappedKeysAndValues(types);
