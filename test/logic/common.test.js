@@ -56,4 +56,8 @@ describe("Common masker", () => {
         expect(commonMasker("00000-000", "043630401")).toBe("04363-040");
         expect(commonMasker("(00)00000-0000", "119543212345")).toBe("(11)95432-1234");
     });
+
+    it("returns empty string if value is empty", () => {
+        expect(commonMasker("000.000.000-00", "")).toBe("");
+    });
 });

@@ -48,8 +48,12 @@ const parsedMask = mask => {
     };
 };
 
-function commonMasker(mask, value) {
-    return parsedMask(mask)(stripped(value)).reduce(withSeparator, "");
+function commonMasker(mask, _value) {
+    const value = stripped(_value);
+    if ( value === "" ) {
+        return "";
+    }
+    return parsedMask(mask)(value).reduce(withSeparator, "");
 }
 
 export {
