@@ -12,6 +12,7 @@
 <script>
     import maskEditFn from "./logic/index";
     import { nextTick, ref } from "vue";
+    import { useApi } from '@directus/extensions-sdk';
     export default {
 	      props: {
 	          mask: {
@@ -37,6 +38,7 @@
 	      },
 	      emits: ['input'],
 	      setup(props, context) {
+            const api = useApi();
             const { emit } = context;
             const errorMessage = ref(null);
             const error = ref(false);
@@ -50,13 +52,18 @@
 			          emit('input', newValue);
 		        }
 
-            const onBlur = e => {
+            const onBlur = async e => {
                 const valueChanged = priorValue !== props.value;
                 if (valueChanged) {
+                    priorValue = props.value;
+                    if (props.validationURL) {
+                        const response = await api.get(props.validationURL);
+                        console.log(response);
+                    }
                     error.value = true;
                     errorMessage.value = "O valor mudou";
                 } else {
-                    error.value = false;
+                    // error.value = false;
                 }
             };
 
