@@ -24,6 +24,22 @@ export default {
                 },
             },
             {
+                field: "validationRequestMethod",
+                type: "string",
+                name: "HTTP Method",
+                meta: {
+                    interface: "select-dropdown",
+                    width: "half",
+                    options: {
+                        choices: [
+                            { text: "GET", value: "GET" },
+                            { text: "PUT", value: "PUT" },
+                            { text: "POST", value: "POST" },
+                        ]
+                    },
+                },
+            },
+            {
                 field: "validationURL",
                 type: "string",
                 name: "URL",

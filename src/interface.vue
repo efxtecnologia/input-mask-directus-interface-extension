@@ -10,15 +10,20 @@
 </template>
 
 <script>
-    import maskEditFn from "./logic/index";
     import { nextTick, ref } from "vue";
     import { useApi } from '@directus/extensions-sdk';
+    import maskEditFn from "./logic/index";
+    import validate from "./controller";
     export default {
 	      props: {
 	          mask: {
 		            type: String,
 		            required: true,
 	          },
+            validationRequestMethod: {
+                type: String,
+                required: false,
+            },
             validationURL: {
                 type: String,
                 required: false,
@@ -56,12 +61,12 @@
                 const valueChanged = priorValue !== props.value;
                 if (valueChanged) {
                     priorValue = props.value;
-                    if (props.validationURL) {
-                        const response = await api.get(props.validationURL);
-                        console.log(response);
-                    }
+                    const validation = await validate(api, props);
+                    // error.value = ! validation.valid;
                     error.value = true;
-                    errorMessage.value = "O valor mudou";
+                    errorMessage.value = validation.valid ?
+                        validation.success.message :
+                        validation.error.message;
                 } else {
                     // error.value = false;
                 }
