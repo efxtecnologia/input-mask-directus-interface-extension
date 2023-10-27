@@ -9,7 +9,7 @@ export default {
 	  types: ['string', 'integer', 'bigInteger'],
     localTypes: ["standard"],
     group: "standard",
-	  options: ({ relations }) => {
+	  options: () => {
         return [
             {
                 field: "mask",
@@ -20,6 +20,34 @@ export default {
                     width: "half",
                     options: {
                         placeholder: "Enter a valid mask",
+                    },
+                },
+            },
+            {
+                field: "validationRequestMethod",
+                type: "string",
+                name: "HTTP Method",
+                meta: {
+                    interface: "select-dropdown",
+                    width: "half",
+                    options: {
+                        choices: [
+                            { text: "GET", value: "GET" },
+                            { text: "PUT", value: "PUT" },
+                            { text: "POST", value: "POST" },
+                        ]
+                    },
+                },
+            },
+            {
+                field: "validationURL",
+                type: "string",
+                name: "URL",
+                meta: {
+                    interface: "input",
+                    width: "full",
+                    options: {
+                        placeholder: "Validation URL",
                     },
                 },
             },
