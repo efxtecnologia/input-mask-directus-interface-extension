@@ -64,9 +64,7 @@
                     const validation = await validate(api, props);
                     // error.value = ! validation.valid;
                     error.value = true;
-                    errorMessage.value = validation.valid ?
-                        validation.success.message :
-                        validation.error.message;
+                    errorMessage.value = validation.result.message;
                 } else {
                     // error.value = false;
                 }
