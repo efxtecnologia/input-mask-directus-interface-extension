@@ -8,4 +8,13 @@ async function validate(api, props) {
     return response.data;
 }
 
+function setAdditionalFields({ emit }, { valid, result }) {
+    const { payload } = result;
+    if (! valid || ! payload || Object.keys(payload).length === 0) {
+        return;
+    }
+    Object.keys(payload).forEach((k, v) => emit("setFieldValue", { field: k, value: v }));
+}
+
 export default validate;
+export { setAdditionalFields };

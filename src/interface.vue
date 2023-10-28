@@ -13,7 +13,7 @@
     import { nextTick, ref } from "vue";
     import { useApi } from '@directus/extensions-sdk';
     import maskEditFn from "./logic/index";
-    import validate from "./controller";
+    import validate, { setAdditionalFields } from "./controller";
     export default {
 	      props: {
 	          mask: {
@@ -57,11 +57,12 @@
 			          emit('input', newValue);
 		        }
 
-            const onBlur = async e => {
+            async function onBlur(e) {
                 const valueChanged = priorValue !== props.value;
                 if (valueChanged) {
                     priorValue = props.value;
                     const validation = await validate(api, props);
+                    setAdditionalFields(context, validation);
                     // error.value = ! validation.valid;
                     error.value = true;
                     errorMessage.value = validation.result.message;
