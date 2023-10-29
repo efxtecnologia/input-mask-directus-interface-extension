@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import { nextTick, ref } from "vue";
+    import { nextTick, ref, inject } from "vue";
     import { useApi } from '@directus/extensions-sdk';
     import maskEditFn from "./logic/index";
     import validate, { setAdditionalFields } from "./controller";
@@ -41,12 +41,14 @@
                 default: null,
             },
 	      },
-	      emits: ['input'],
+	      emits: ["input", "validation-effect"],
+        inject: ["values"],
 	      setup(props, context) {
             const api = useApi();
             const { emit } = context;
             const errorMessage = ref(null);
             const error = ref(false);
+            const values = inject("values", ref({}));
             let priorValue = props.value;
 
 		        async function handleChange(_value) {
@@ -62,7 +64,7 @@
                 if (valueChanged) {
                     priorValue = props.value;
                     const validation = await validate(api, props);
-                    setAdditionalFields(context, validation);
+                    setAdditionalFields(values, context, validation);
                     // error.value = ! validation.valid;
                     error.value = true;
                     errorMessage.value = validation.result.message;
@@ -71,7 +73,12 @@
                 }
             };
 
-		        return { handleChange, onBlur, error, errorMessage };
+		        return {
+                handleChange,
+                onBlur,
+                error,
+                errorMessage
+            };
 	      },
     };
 </script>

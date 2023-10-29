@@ -1,3 +1,5 @@
+import { nextTick } from "vue";
+
 async function validate(api, props) {
     if (! props.validationURL || ! props.validationRequestMethod) {
         return { valid: true, success: { message: "Valid without calling the API" } };
@@ -8,12 +10,18 @@ async function validate(api, props) {
     return response.data;
 }
 
-function setAdditionalFields({ emit }, { valid, result }) {
+async function setAdditionalFields(values, { emit, attrs }, { result }) {
     const { payload } = result;
-    if (! valid || ! payload || Object.keys(payload).length === 0) {
+    if (! payload || Object.keys(payload).length === 0) {
         return;
     }
-    Object.keys(payload).forEach((k, v) => emit("setFieldValue", { field: k, value: v }));
+
+    for await (const k of Object.keys(payload)) {
+        if (attrs.field !== k && values.value[k] !== undefined) {
+            await nextTick();
+            emit("setFieldValue", { field: k, value: payload[k] });
+        }
+    }
 }
 
 export default validate;
