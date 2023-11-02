@@ -2,7 +2,7 @@ import { nextTick } from "vue";
 
 async function validate(api, props) {
     if (! props.validationURL || ! props.validationRequestMethod) {
-        return { valid: true, success: { message: "Valid without calling the API" } };
+        return { valid: true, result: { message: "Valid without calling the API", payload: {} } };
     }
 
     const apiMethod = api[props.validationRequestMethod.toLowerCase()];
