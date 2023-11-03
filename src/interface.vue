@@ -14,7 +14,7 @@
     </section>
     <component :is="'style'">
         .v-overlay {
-            --v-overlay-color: rgba(255, 0, 0, 0.5);;
+            --v-overlay-color: rgba(0, 0, 0, 0.2);;
         }
         #overlay {
             visibility: visible;
