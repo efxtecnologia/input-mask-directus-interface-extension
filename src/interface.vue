@@ -53,11 +53,11 @@
                 required: false,
             },
             requestPayloadRules: {
-                type: String,
+                type: Object,
                 required: false,
             },
             responsePayloadRules: {
-                type: String,
+                type: Object,
                 required: false,
             },
             validationRequestMethod: {

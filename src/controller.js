@@ -16,11 +16,12 @@ async function setAdditionalFields(values, { responsePayloadRules }, { emit, att
     if (! payload || Object.keys(payload).length === 0) {
         return;
     }
+    const translatedPayload = withPayloadRules(payload, responsePayloadRules);
 
-    for await (const k of Object.keys(withPayloadRules(payload, responsePayloadRules))) {
+    for await (const k of Object.keys(translatedPayload)) {
         if (attrs.field !== k && values.value[k] !== undefined) {
             await nextTick();
-            emit("setFieldValue", { field: k, value: payload[k] });
+            emit("setFieldValue", { field: k, value: translatedPayload[k] });
         }
     }
 }
