@@ -1,4 +1,4 @@
-import { parsedMask, commonMasker, multiFormatter } from "../../src/logic/common";
+import { parsedMask, commonMasker, multiFormatter, withPayloadRules } from "../../src/logic/common";
 
 describe("parsedMask", () => {
     it("converts a string representation of a mask into a masking function", () => {
@@ -76,5 +76,21 @@ describe("Multi formatter", () => {
         expect(multiFormatter(["(00)00000-0000", "(00)0000-0000"], "119543212345")).toBe("(11)95432-1234");
         expect(multiFormatter(["(00)00000-0000", "(00)0000-0000"], "1195432123")).toBe("(11)9543-2123");
         expect(multiFormatter(["(00)00000-0000", "(00)0000-0000"], "11954321234")).toBe("(11)95432-1234");
+    });
+});
+
+describe("withPayloadRules", () => {
+    it("returns the same object if there are no rules", () => {
+        expect(withPayloadRules({ a: 1, b: 2, c: 3 }, undefined)).toEqual({ a: 1, b: 2, c: 3 });
+        expect(withPayloadRules({ a: 1, b: 2, c: 3 }, null)).toEqual({ a: 1, b: 2, c: 3 });
+    });
+
+    it("returns a new objetct with translated keys based on rules", () => {
+        expect(withPayloadRules({ a: 1, b: 2 }, { a: "aa", b: "B-b" })).toEqual({ aa: 1, "B-b": 2 });
+    });
+
+    it("returns original keys if they are not translated by the rules", () => {
+        expect(withPayloadRules({ a: 1, b: 2, c: 3 }, { a: "aa", b: "B-b" }))
+            .toEqual({ aa: 1, "B-b": 2, c: 3 });
     });
 });

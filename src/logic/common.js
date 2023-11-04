@@ -70,10 +70,29 @@ function multiFormatter(_masks, _value) {
     return commonMasker(selectedMask, value);
 }
 
+function rulesAreEmpty(rules) {
+    return rules === undefined ||
+        rules === null ||
+        typeof(rules) !== "object" ||
+        rules.length !== undefined ||
+        Object.keys(rules).length === 0;
+}
+
+function withPayloadRules(payload, rules) {
+    if (rulesAreEmpty(rules)) {
+        return payload;
+    }
+    return Object.keys(payload).reduce((result, k) => {
+        const newKey = rules[k] || k;
+        return { ...result, [newKey]: payload[k] };
+    }, {});
+}
+
 export {
     stripped,
     withSeparator,
     parsedMask,
     commonMasker,
     multiFormatter,
+    withPayloadRules,
 };

@@ -120,11 +120,9 @@
                 if (valueChanged) {
                     priorValue = props.value;
                     const validation = await doValidate();
-                    setAdditionalFields(values, context, validation);
+                    setAdditionalFields(values, props, context, validation);
                     error.value = ! validation.valid;
                     errorMessage.value = validation.result.message;
-                } else {
-                    // error.value = false;
                 }
             };
 

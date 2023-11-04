@@ -1,4 +1,5 @@
 import { nextTick } from "vue";
+import { withPayloadRules } from "./logic/common";
 
 async function validate(api, props) {
     if (! props.validationURL || ! props.validationRequestMethod) {
@@ -10,13 +11,13 @@ async function validate(api, props) {
     return response.data;
 }
 
-async function setAdditionalFields(values, { emit, attrs }, { result }) {
+async function setAdditionalFields(values, { responsePayloadRules }, { emit, attrs }, { result }) {
     const { payload } = result;
     if (! payload || Object.keys(payload).length === 0) {
         return;
     }
 
-    for await (const k of Object.keys(payload)) {
+    for await (const k of Object.keys(withPayloadRules(payload, responsePayloadRules))) {
         if (attrs.field !== k && values.value[k] !== undefined) {
             await nextTick();
             emit("setFieldValue", { field: k, value: payload[k] });
