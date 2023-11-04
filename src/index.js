@@ -1,15 +1,15 @@
-import InterfaceWebMRPMaskEdit from './interface.vue';
+import InterfaceWebMRPMaskEdit from "./interface.vue";
 
 export default {
-	  id: 'webmrp-maskedit',
-	  name: 'Mask Edit Field',
+	  id: "webmrp-maskedit",
+	  name: "Mask Edit Field",
 	  icon: "box",
-	  description: 'Masked edit field',
+	  description: "Masked edit field",
 	  component: InterfaceWebMRPMaskEdit,
-	  types: ['string', 'integer', 'bigInteger'],
+	  types: ["string", "integer", "bigInteger"],
     localTypes: ["standard"],
     group: "standard",
-	  options: () => {
+	  options: ({ field }) => {
         return [
             {
                 field: "mask",
@@ -22,6 +22,38 @@ export default {
                         placeholder: "Enter a valid mask",
                     },
                 },
+            },
+            {
+                field: "softLength",
+                name: "$t:soft_length",
+                type: "integer",
+                meta: {
+                    width: "half",
+                    interface: "input",
+                    options: {
+                        placeholder: "255",
+                        min: 1,
+                        max: field.schema?.max_length,
+                    },
+                },
+				    },
+            {
+                field: "requestPayloadRules",
+                name: "Request Payload Rules",
+                type: "json",
+                meta: {
+                    width: "full",
+                    interface: "input-code",
+                }
+            },
+            {
+                field: "responsePayloadRules",
+                name: "Response Payload Rules",
+                type: "json",
+                meta: {
+                    width: "full",
+                    interface: "input-code",
+                }
             },
             {
                 field: "validationRequestMethod",

@@ -27,9 +27,16 @@ const maskFns = {
 
 const typesByMask = swappedKeysAndValues(types);
 
-function maskEditFn(maskId, value) {
-    const maskFn = maskFns[typesByMask[maskId.toUpperCase()]] || identity;
-    return maskFn(value);
+function trimmedOnSoftLength(softLength, value) {
+    if ( ! softLength || softLength <= 0 ) {
+        return value;
+    }
+    return value.slice(0, softLength);
+}
+
+function maskEditFn({ mask, softLength }, value) {
+    const maskFn = maskFns[typesByMask[mask.toUpperCase()]] || identity;
+    return trimmedOnSoftLength(softLength, maskFn(value));
 }
 
 export default maskEditFn;
